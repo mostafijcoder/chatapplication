@@ -1,19 +1,46 @@
-//import { StrictMode } from 'react'
-//import { createRoot } from 'react-dom/client'
-//import './index.css'
-//import App from './App.jsx'
-import Proptypes from 'prop-types';
+import React from "react";
+//import { createRoot } from "react-dom/client";
+import PropTypes from 'prop-types';
 import ReactDOM from "react-dom";
-import React, { Component } from 'react';
 import { render } from 'react-dom';
+//import App from "./App.jsx";
 
-//createRoot(document.getElementById('root')).render(
-  /*<StrictMode>
-    <App />
-  </StrictMode>,
-  
- )*///;
- const node=document.getElementById('root');
+const rootElement = document.getElementById("root");
+
+const data={
+  post: {
+    id: 123,
+    content: 'What we hope ever to do with ease, we must first learn to do with diligence. - Samuel Johnson',
+    user: 'Mark'
+  },
+  comments: [
+    {
+      id: 0,
+      user: 'David',
+      content: 'such. win.',
+    },
+    {
+      id: 1,
+      user: 'Haley',
+      content: 'Love it.'
+    },
+    {
+      id: 2,
+      user: 'Peter',
+      content: 'Who was Samuel Johnson?'
+    },
+    {
+      id: 3,
+      user: 'Margaret',
+      content: 'That\'s really profound.'
+    },
+    {
+      id: 4,
+      user: 'Randy',
+      content: 'The meaning of life is to give life meaning.'
+    }
+  ]
+};
 
  class Post extends React.Component{
   render(){
@@ -56,14 +83,14 @@ class Comment extends React.Component{
   }
 }
 Comment.propTypes={
-  id:Proptypes.number.isRequired,
-  content:Proptypes.string.isRequired,
-  user:Proptypes.string.isRequired
+  id:PropTypes.number.isRequired,
+  content:PropTypes.string.isRequired,
+  user:PropTypes.string.isRequired
 };
 Post.propTypes={
-  user:Proptypes.string.isRequired,
-  content:Proptypes.string.isRequired,
-  id:Proptypes.number.isRequired
+  user:PropTypes.string.isRequired,
+  content:PropTypes.string.isRequired,
+  id:PropTypes.number.isRequired
 };
 
  class CreateComment extends React.Component{
@@ -93,10 +120,10 @@ Post.propTypes={
         };
       });
     }
-    handleSubmit(){
+    handleSubmit(event){
       event.preventDefault();
       this.props.onCommentSubmit({
-        user:this.state.user,
+        user:this.state.user.trim(),
         content:this.state.content.trim()
       });
       this.setState(()=>{
@@ -131,9 +158,10 @@ Post.propTypes={
     }
   }
   CreateComment.propTypes={
-    //onCommentSubmit:Proptypes.func.isRequired,
-    content:Proptypes.string
+    onCommentSubmit:PropTypes.func.isRequired,
+    content:PropTypes.string
   };
+/*
 
   const app=React.createElement(Post,{
     id:1,
@@ -151,47 +179,12 @@ Post.propTypes={
 
   ReactDOM.render(app,node);
 
-
-
-  /*
-
-  const data={
-    post: {
-      id: 123,
-      content: 'What we hope ever to do with ease, we must first learn to do with diligence. - Samuel Johnson',
-      user: 'Mark'
-    },
-    comments: [
-      {
-        id: 0,
-        user: 'David',
-        content: 'such. win.',
-      },
-      {
-        id: 1,
-        user: 'Haley',
-        content: 'Love it.'
-      },
-      {
-        id: 2,
-        user: 'Peter',
-        content: 'Who was Samuel Johnson?'
-      },
-      {
-        id: 3,
-        user: 'Margaret',
-        content: 'That\'s really profound.'
-      },
-      {
-        id: 4,
-        user: 'Randy',
-        content: 'The meaning of life is to give life meaning.'
-      }
-    ]
-  };
   */
-/*
-  class Commentbox extends React.Component{
+
+  
+  
+
+  class CommentBox extends React.Component{
     constructor(props){
       super(props);
       this.state={
@@ -213,35 +206,45 @@ Post.propTypes={
       return React.createElement('div',{
         className:'commentBox'
       },
-      React.createElement('Post',{
+      React.createElement(Post,{
         id:this.props.post.id,
         content:this.props.post.content,
         user:this.props.post.user
       }),
       this.state.comments.map((comment)=>{
-        return React.createElement('Comment',{
+        return React.createElement(Comment,{
           key:comment.id,
           id:comment.id,
           content:comment.content,
           user:comment.user
         });
       }),
-      React.createElement('CreateComment',{
+      React.createElement(CreateComment,{
         onCommentSubmit:this.handleCommentSubmit
       })
       );
     }
   }
-  Commentbox.propTypes={
-    post:Proptypes.object,
-    comments:Proptypes.arrayOf(Proptypes.object)
+  CommentBox.propTypes = {
+    post: PropTypes.object.isRequired,
+    comments: PropTypes.arrayOf(PropTypes.object).isRequired,
   };
-  const App=React.createElement(Commentbox,{
-    post:data.post,
-    comments:data.comments
-  });
-  ReactDOM.render(React.createElement(App),node);
-  */
+  
+ReactDOM.render(React.createElement(CommentBox,{
+  post:data.post,
+  comments:data.comments
+},
+CreateComment, {}),rootElement);
+  
+
+
+
+ /*<React.StrictMode>
+ <App />
+ </React.StrictMode> */
+ 
+ 
+  
 
 
 
